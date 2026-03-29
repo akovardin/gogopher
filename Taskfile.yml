@@ -1,0 +1,31 @@
+# https://taskfile.dev
+
+version: '3'
+
+tasks:
+  test:
+    cmds:
+      - cd Source && CGO_CFLAGS="-I/Users/artem/Developer/PlaydateSDK-3.0.3/C_API -DTARGET_EXTENSION=1" go test ./... -v
+
+  build:
+    cmds:
+      - |
+        GOTOOLCHAIN=go1.25.0 pdgoc -sim \
+          -name="Gopher" \
+          -author="kodikapusta" \
+          -desc="Gopher protocol example" \
+          -bundle-id=ru.kodikapusta.gopher \
+          -version=1.0 \
+          -build-number=1
+
+  deploy:
+    cmds:
+      - |
+        GOTOOLCHAIN=go1.25.0 pdgoc -sim -device  \
+          -name="Gopher" \
+          -author="kodikapusta" \
+          -desc="Gopher protocol example" \
+          -bundle-id=ru.kodikapusta.gopher \
+          -version=1.0 \
+          -build-number=1 \
+          -deploy
