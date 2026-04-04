@@ -49,8 +49,8 @@ func TestNewView(t *testing.T) {
 	if v == nil {
 		t.Fatal("NewView returned nil")
 	}
-	if len(v.data.Items) != 6 {
-		t.Errorf("expected 6 default items, got %d", len(v.data.Items))
+	if len(v.data.Items) != 10 {
+		t.Errorf("expected 10 default items, got %d", len(v.data.Items))
 	}
 	if v.crnk != 0 {
 		t.Errorf("expected crnk to be 0, got %f", v.crnk)
@@ -137,14 +137,20 @@ func TestRender_InfoItem(t *testing.T) {
 	}
 	v.Render()
 
-	if len(draws) != 1 {
-		t.Fatalf("expected 1 DrawText call, got %d", len(draws))
+	if len(draws) != 2 {
+		t.Fatalf("expected 2 DrawText calls, got %d", len(draws))
 	}
 	if draws[0].text != "info line" {
 		t.Errorf("expected 'info line', got %q", draws[0].text)
 	}
-	if draws[0].x != 10 || draws[0].y != 26 {
-		t.Errorf("expected (10,26), got (%d,%d)", draws[0].x, draws[0].y)
+	if draws[0].x != 15 || draws[0].y != 20 {
+		t.Errorf("expected (15,20), got (%d,%d)", draws[0].x, draws[0].y)
+	}
+	if draws[1].text != ">" {
+		t.Errorf("expected '>', got %q", draws[1].text)
+	}
+	if draws[1].x != 1 || draws[1].y != 40 {
+		t.Errorf("expected (1,40), got (%d,%d)", draws[1].x, draws[1].y)
 	}
 }
 
@@ -177,11 +183,14 @@ func TestRender_TextItem(t *testing.T) {
 	}
 	v.Render()
 
-	if len(draws) != 1 {
-		t.Fatalf("expected 1 DrawText call, got %d", len(draws))
+	if len(draws) != 2 {
+		t.Fatalf("expected 2 DrawText calls, got %d", len(draws))
 	}
 	if draws[0].text != "TXT |  readme.txt" {
 		t.Errorf("expected 'TXT |  readme.txt', got %q", draws[0].text)
+	}
+	if draws[1].text != ">" {
+		t.Errorf("expected '>', got %q", draws[1].text)
 	}
 }
 
@@ -214,8 +223,8 @@ func TestRender_DirectoryItem(t *testing.T) {
 	}
 	v.Render()
 
-	if len(draws) != 1 {
-		t.Fatalf("expected 1 DrawText call, got %d", len(draws))
+	if len(draws) != 2 {
+		t.Fatalf("expected 2 DrawText calls, got %d", len(draws))
 	}
 	if draws[0].text != "DIR |  documents" {
 		t.Errorf("expected 'DIR |  documents', got %q", draws[0].text)
@@ -253,28 +262,30 @@ func TestRender_MixedItems(t *testing.T) {
 	}
 	v.Render()
 
-	if len(draws) != 3 {
-		t.Fatalf("expected 3 DrawText calls, got %d", len(draws))
+	if len(draws) != 4 {
+		t.Fatalf("expected 4 DrawText calls, got %d", len(draws))
 	}
 
-	expected := []struct {
-		text string
-		y    int
-	}{
-		{"header", 26},
-		{"TXT |  file.txt", 52},
-		{"DIR |  subdir", 65},
+	if draws[0].text != "header" {
+		t.Errorf("draw[0]: expected 'header', got %q", draws[0].text)
 	}
-	for i, e := range expected {
-		if draws[i].text != e.text {
-			t.Errorf("draw[%d]: expected text %q, got %q", i, e.text, draws[i].text)
-		}
-		if draws[i].x != 10 {
-			t.Errorf("draw[%d]: expected x=10, got %d", i, draws[i].x)
-		}
-		if draws[i].y != e.y {
-			t.Errorf("draw[%d]: expected y=%d, got %d", i, e.y, draws[i].y)
-		}
+	if draws[0].x != 15 || draws[0].y != 20 {
+		t.Errorf("draw[0]: expected (15,20), got (%d,%d)", draws[0].x, draws[0].y)
+	}
+	if draws[1].text != "TXT |  file.txt" {
+		t.Errorf("draw[1]: expected 'TXT |  file.txt', got %q", draws[1].text)
+	}
+	if draws[1].x != 15 || draws[1].y != 40 {
+		t.Errorf("draw[1]: expected (15,40), got (%d,%d)", draws[1].x, draws[1].y)
+	}
+	if draws[2].text != "DIR |  subdir" {
+		t.Errorf("draw[2]: expected 'DIR |  subdir', got %q", draws[2].text)
+	}
+	if draws[2].x != 15 || draws[2].y != 60 {
+		t.Errorf("draw[2]: expected (15,60), got (%d,%d)", draws[2].x, draws[2].y)
+	}
+	if draws[3].text != ">" {
+		t.Errorf("draw[3]: expected '>', got %q", draws[3].text)
 	}
 }
 
@@ -307,11 +318,11 @@ func TestRender_CrankScrolling(t *testing.T) {
 	}
 	v.Render()
 
-	if len(draws) != 1 {
-		t.Fatalf("expected 1 DrawText call, got %d", len(draws))
+	if len(draws) != 2 {
+		t.Fatalf("expected 2 DrawText calls, got %d", len(draws))
 	}
-	if draws[0].y != 13 {
-		t.Errorf("expected y=13, got %d", draws[0].y)
+	if draws[0].y != 20 {
+		t.Errorf("expected y=20, got %d", draws[0].y)
 	}
 }
 
@@ -324,7 +335,7 @@ func TestRender_CrankAccumulates(t *testing.T) {
 	s := &mockCrank{
 		getCrankChangeFunc: func() float32 {
 			crankCalls++
-			return -10
+			return 10
 		},
 	}
 
@@ -338,13 +349,13 @@ func TestRender_CrankAccumulates(t *testing.T) {
 	}
 
 	v.Render()
-	if v.crnk != -10 {
-		t.Errorf("expected crnk=-10 after first render, got %f", v.crnk)
+	if v.crnk != 10 {
+		t.Errorf("expected crnk=10 after first render, got %f", v.crnk)
 	}
 
 	v.Render()
-	if v.crnk != -20 {
-		t.Errorf("expected crnk=-20 after second render, got %f", v.crnk)
+	if v.crnk != 20 {
+		t.Errorf("expected crnk=20 after second render, got %f", v.crnk)
 	}
 
 	if crankCalls != 2 {
@@ -382,7 +393,10 @@ func TestRender_UnhandledType(t *testing.T) {
 	}
 	v.Render()
 
-	if len(draws) != 0 {
-		t.Errorf("expected 0 DrawText calls for unhandled types, got %d", len(draws))
+	if len(draws) != 1 {
+		t.Fatalf("expected 1 DrawText call (for cursor), got %d", len(draws))
+	}
+	if draws[0].text != ">" {
+		t.Errorf("expected '>', got %q", draws[0].text)
 	}
 }
