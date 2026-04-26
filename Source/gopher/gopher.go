@@ -2,6 +2,7 @@ package gopher
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/playdate-go/pdgo"
@@ -225,7 +226,8 @@ func parseLine(line string) Item {
 		item.Host = fields[2]
 	}
 	if len(fields) > 3 {
-		item.Port = atoi(fields[3])
+		// TODO: remove atoi
+		item.Port, _ = strconv.Atoi(fields[3])
 	}
 	return item
 }
