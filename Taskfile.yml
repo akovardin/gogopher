@@ -5,7 +5,7 @@ version: '3'
 tasks:
   test:
     cmds:
-      - cd Source && CGO_CFLAGS="-I{{.HOME}}/Developer/PlaydateSDK/C_API -DTARGET_EXTENSION=1" go test ./... -v
+      - cd source && CGO_CFLAGS="-I{{.HOME}}/Developer/PlaydateSDK/C_API -DTARGET_EXTENSION=1" go test ./... -v
 
   build:
     cmds:
