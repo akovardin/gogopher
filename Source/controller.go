@@ -15,10 +15,12 @@ type ClientInterface interface {
 
 type ViewIntarface interface {
 	Data(d Data)
+	Crnk(in float32)
 }
 
 type SystemInterface interface {
 	LogToConsole(msg string)
+	GetCrankChange() float32
 }
 
 type Controller struct {
@@ -61,9 +63,6 @@ func (c *Controller) PressB() {
 }
 
 func (c *Controller) PressA(cursor gopher.Item) {
-
-	// get item fom view
-	// navigate to item
 	c.system.LogToConsole("Pressed A: " + cursor.Selector)
 
 	if cursor.Type == '1' {
@@ -87,4 +86,8 @@ func (c *Controller) PressA(cursor gopher.Item) {
 			c.system.LogToConsole(fmt.Sprintf("Error: %v", err))
 		})
 	}
+}
+
+func (c *Controller) Crank() {
+	c.view.Crnk(c.system.GetCrankChange())
 }

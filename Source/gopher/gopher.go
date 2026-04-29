@@ -164,8 +164,6 @@ func (c *Client) begin(
 				onItems(items)
 			}
 		case stateFile:
-			// prepare file
-
 			if onData != nil {
 				onData(data)
 			}
