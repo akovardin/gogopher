@@ -31,6 +31,8 @@ type mockView struct {
 	dataFunc func(Data)
 }
 
+func (m *mockView) Crnk(in float32) {}
+
 func (m *mockView) Data(d Data) {
 	m.dataFunc(d)
 }
@@ -38,6 +40,8 @@ func (m *mockView) Data(d Data) {
 type mockSystem struct {
 	logFunc func(msg string)
 }
+
+func (m *mockSystem) GetCrankChange() float32 { return 0 }
 
 func (m *mockSystem) LogToConsole(msg string) {
 	m.logFunc(msg)
