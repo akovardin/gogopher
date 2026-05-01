@@ -43,90 +43,20 @@ func NewView(graphics GraphicsInterface, system CranckInterface) *View {
 		system:   system,
 
 		data: Data{
-			Items: []gopher.Item{
-				{
-					Type:     'i',
-					Name:     "Привет всем любителям старины!",
-					Selector: "",
-					Host:     "",
-					Port:     0,
-				},
-				{
-					Type:     'i',
-					Name:     "",
-					Selector: "",
-					Host:     "",
-					Port:     0,
-				},
-				{
-					Type:     'i',
-					Name:     "Мне придется использовать такой кириллический шрифт",
-					Selector: "",
-					Host:     "",
-					Port:     0,
-				},
-				{
-					Type:     'i',
-					Name:     "",
-					Selector: "",
-					Host:     "",
-					Port:     0,
-				},
-				{
-					Type:     '0',
-					Name:     "Интересная история",
-					Selector: "/story",
-					Host:     "",
-					Port:     0,
-				},
-				{
-					Type:     '1',
-					Name:     "Еще истории",
-					Selector: "/more-story",
-					Host:     "",
-					Port:     0,
-				},
-				{
-					Type:     'i',
-					Name:     "",
-					Selector: "",
-					Host:     "",
-					Port:     0,
-				},
-				{
-					Type:     'i',
-					Name:     "Какой-то текст, который идет который\nописывает разные разделы иныормации\nи пернеосится на разные строки",
-					Selector: "",
-					Host:     "",
-					Port:     0,
-				},
-				{
-					Type:     'i',
-					Name:     "",
-					Selector: "",
-					Host:     "",
-					Port:     0,
-				},
-				{
-					Type:     '1',
-					Name:     "Еще больше историй",
-					Selector: "/story",
-					Host:     "",
-					Port:     0,
-				},
-			},
+			Items: []gopher.Item{},
 		},
 	}
 }
 
+func (v *View) Crnk(crnk float32) {
+	v.crnk += crnk
+}
+
 func (v *View) Data(d Data) {
-	v.crnk = 0
 	v.data = d
 }
 
 func (v *View) Render() {
-	v.crnk += v.system.GetCrankChange()
-
 	pos := -v.crnk
 
 	if pos > 0 {
