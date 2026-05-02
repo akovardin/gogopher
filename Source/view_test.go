@@ -49,8 +49,8 @@ func TestNewView(t *testing.T) {
 	if v == nil {
 		t.Fatal("NewView returned nil")
 	}
-	if len(v.data.Items) != 10 {
-		t.Errorf("expected 10 default items, got %d", len(v.data.Items))
+	if len(v.data.Items) != 0 {
+		t.Errorf("expected 0 default items, got %d", len(v.data.Items))
 	}
 	if v.crnk != 0 {
 		t.Errorf("expected crnk to be 0, got %f", v.crnk)
@@ -348,14 +348,14 @@ func TestRender_CrankAccumulates(t *testing.T) {
 		}},
 	}
 
-	v.Render()
+	v.Crnk(s.GetCrankChange())
 	if v.crnk != 10 {
-		t.Errorf("expected crnk=10 after first render, got %f", v.crnk)
+		t.Errorf("expected crnk=10 after first Crnk, got %f", v.crnk)
 	}
 
-	v.Render()
+	v.Crnk(s.GetCrankChange())
 	if v.crnk != 20 {
-		t.Errorf("expected crnk=20 after second render, got %f", v.crnk)
+		t.Errorf("expected crnk=20 after second Crnk, got %f", v.crnk)
 	}
 
 	if crankCalls != 2 {
