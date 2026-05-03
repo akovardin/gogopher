@@ -61,6 +61,9 @@ func update() int {
 		controller.PressA(view.Cursor)
 	}
 
+	// обработка крутилки
+	controller.Crank()
+
 	// Draw FPS
 	pd.System.DrawFPS(0, 0)
 
