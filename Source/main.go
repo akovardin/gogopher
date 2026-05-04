@@ -47,7 +47,7 @@ func update() int {
 	_, pushed, _ := pd.System.GetButtonState()
 	// Fire on A or B press
 	if pushed&pdgo.ButtonB != 0 {
-		pd.System.LogToConsole("Press button A")
+		pd.System.LogToConsole("Press button B")
 
 		// connect to server
 		controller.PressB()
@@ -55,7 +55,7 @@ func update() int {
 	}
 
 	if pushed&pdgo.ButtonA != 0 {
-		pd.System.LogToConsole("Press button B")
+		pd.System.LogToConsole("Press button A")
 
 		// query by selector
 		controller.PressA(view.Cursor)
